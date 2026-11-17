@@ -1,1 +1,1 @@
-# shittyu
+studyplan-group78
