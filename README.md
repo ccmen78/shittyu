@@ -17,19 +17,57 @@ Traditional planners require manual UI interactions. **StudyPlan** is built for 
 ```bash
 pip install studyplan-group78
 
-## 💻 CLI Usage
-# Initialize term end date
+##💻 CLI Usage
+#Initialize Term End Date
 studyplan init 2026-12-31
 
-# Add an assignment
+#Add Assignment
 studyplan add "CS1302 Project" --due 2026-11-20 --est 120 --prio High
 
-# Get a suggested study plan (e.g., 90 minutes available today)
+#Generate Study Plan
 studyplan plan --mins 90
 
-# Add course and calculate GPA
+Example Output
+
+┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ Task Name        ┃ Due Date   ┃ Time     ┃
+┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━╋━━━━━━━━━━┫
+┃ CS1302 Project   ┃ 2026-11-20 ┃ 90 mins  ┃
+┗━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━┻━━━━━━━━━━┛
+#Add Course
 studyplan add-course "Calculus" --credits 4 --grade A
+#Calculate GPA
 studyplan calc-gpa
+
+Example Output
+Estimated GPA: 4.0
+
+#Homework Deadline Manager
+studyplan deadline --date 2026-12-01
+
+Example Output
+Days Remaining: 19
+Priority: Low Priority
+
+#Exam Countdown
+studyplan exam --date 2026-12-20
+
+Example Output
+38 days remaining
+
+#Quiz Generator
+studyplan quiz
+
+Example Output
+Q: What is Demand?
+A: Relationship between price and quantity demanded
+
+#Study Timer
+studyplan add-time 120
+studyplan study-hours
+
+Example Output
+Total Study Hours: 2.0
 
 ##🐍 Python API Usage (For AI Agents)
 import studyplan
