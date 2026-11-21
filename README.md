@@ -35,8 +35,29 @@ studyplan calc-gpa
 import studyplan
 
 # Generate study plan
-tasks = [{"name": "Essay", "due_date": "2026-11-20", "est_minutes": 90, "priority": "High"}]
-plan = studyplan.suggest_study_plan(tasks, available_minutes=60)
+tasks = [
+
+    {
+        "name": "Essay",
+        "due_date": "2026-11-20",
+        "est_minutes": 90,
+        "priority": "High"
+    },
+
+    {
+        "name": "Math Homework",
+        "due_date": "2026-11-25",
+        "est_minutes": 60,
+        "priority": "Medium"
+    }
+
+]
+
+plan = studyplan.suggest_study_plan(
+    tasks,
+    available_minutes=120
+)
+
 print(plan)
 
 # Calculate GPA
