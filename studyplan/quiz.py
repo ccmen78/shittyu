@@ -1,12 +1,15 @@
 def create_quiz(notes):
     """
-    Generate quiz questions from notes.
+    Generate quiz questions
+    from study notes.
 
-    Parameters:
-        notes (dict)
+    Parameters
+    ----------
+    notes : dict
 
-    Returns:
-        list
+    Returns
+    -------
+    list
     """
 
     quiz = []
