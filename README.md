@@ -3,12 +3,11 @@
 
 ## 👥 Team Members (Group 78)
 
-* **[ZHU ZIWEN(ccmen78)]** - Core Logic (GPA)& Documentation
-* **[HUNG TSZ KIT]** - Planner & Algorithm & debug
-* **[Name 3]** - Storage & File I/O
-* **[Name 4]** - CLI Interface
-* **[Name 5]** - Packaging & Init
-* **[Name 6]** - Demo & testing
+* **[ZHU ZIWEN]** - Core Logic (GPA) ,Documentation 
+* **[MA CHINGHONG]** - Planner & Algorithm 
+* **[WILLIAM LIU]** - Storage & File I/O 
+* **[HUNG TSZKIT]** - CLI Interface, debug & Init
+* **[WU ZIHAN]** - Packaging & testing
 
 ## 💡 Motivation & Innovation
 Traditional planners require manual UI interactions. **StudyPlan** is built for the **Agentic Coding** era. By providing a clean Python API and local JSON storage, an LLM Agent can easily call `studyplan.suggest_study_plan()` to generate personalized schedules for students while ensuring complete data privacy (data stays local in `~/.studyplan/data.json`).
