@@ -10,7 +10,8 @@ DEFAULT_DATA = {
     "assignments": [],
     "courses": [],
     "prev_gpa": 0.0,
-    "prev_credits": 0.0
+    "prev_credits": 0.0,
+    "study_minutes": 0
 }
 
 
