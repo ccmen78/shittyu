@@ -36,6 +36,7 @@ Example Output
 
 #Add Course
 studyplan add-course "Calculus" --credits 4 --grade A
+
 #Calculate GPA
 studyplan calc-gpa
 
