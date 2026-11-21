@@ -8,7 +8,8 @@
 * **[WILLIAM LIU]** - Storage & File I/O 
 * **[HUNG TSZKIT]** - CLI Interface, debug & Init
 * **[WU ZIHAN]** - Packaging & testing
-
+* **[QIN BOYAN]** - Demo & Testing
+ 
 ## 💡 Motivation & Innovation
 Traditional planners require manual UI interactions. **StudyPlan** is built for the **Agentic Coding** era. By providing a clean Python API and local JSON storage, an LLM Agent can easily call `studyplan.suggest_study_plan()` to generate personalized schedules for students while ensuring complete data privacy (data stays local in `~/.studyplan/data.json`).
 
