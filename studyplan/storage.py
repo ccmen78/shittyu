@@ -76,3 +76,11 @@ def save_data(data):
                 f,
                 indent=4,
                 ensure_ascii=False
+            )
+            
+except (
+        0SError,/TyperError
+    
+):
+
+    raise
