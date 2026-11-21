@@ -47,7 +47,7 @@ print(gpa)
 #📅 Exam Countdown
 #Calculate the number of days remaining until upcoming exams.
 
-days = studymaster.exam_countdown(
+days = studyplan.exam_countdown(
     "2026-12-20"
 )
 
