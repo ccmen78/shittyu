@@ -1,16 +1,19 @@
-# studyplan/cli.py
-
 import argparse
 from datetime import datetime
 
 from rich.console import Console
 from rich.table import Table
 
-from studyplan import gpa
-from studyplan import planner
-from studyplan import storage
-from studyplan import exam
-from studyplan import quiz
+from studyplan import (
+    gpa,
+    planner,
+    storage,
+    exam,
+    quiz,
+    deadline
+)
+
+from studyplan.timer import StudySession
 
 console = Console()
 
@@ -26,137 +29,155 @@ def validate_date(date_string):
 def main():
 
     parser = argparse.ArgumentParser(
-        description="StudyPlan - A local CLI assistant"
+        description="StudyPlan - Student Productivity Toolkit"
     )
 
     subparsers = parser.add_subparsers(
-        dest="command",
-        help="Sub-commands"
+        dest="command"
     )
 
-    # --------------------
-    # init
-    # --------------------
+    # -------------------
+    # Init
+    # -------------------
 
     parser_init = subparsers.add_parser(
         "init",
-        help="Set the end date of the term"
+        help="Set term end date"
     )
 
     parser_init.add_argument(
-        "date",
-        help="Date format: YYYY-MM-DD"
+        "date"
     )
 
-    # --------------------
-    # add assignment
-    # --------------------
+    # -------------------
+    # Assignment
+    # -------------------
 
     parser_add = subparsers.add_parser(
         "add",
-        help="Add a new assignment"
+        help="Add assignment"
     )
 
     parser_add.add_argument(
-        "name",
-        help="Assignment name"
+        "name"
     )
 
     parser_add.add_argument(
         "--due",
-        required=True,
-        help="Due date YYYY-MM-DD"
+        required=True
     )
 
     parser_add.add_argument(
         "--est",
         type=int,
-        default=60,
-        help="Estimated time (minutes)"
+        default=60
     )
 
     parser_add.add_argument(
         "--prio",
         choices=["High", "Medium", "Low"],
-        default="Medium",
-        help="Priority"
+        default="Medium"
     )
 
-    # --------------------
-    # study plan
-    # --------------------
+    # -------------------
+    # Planner
+    # -------------------
 
     parser_plan = subparsers.add_parser(
         "plan",
-        help="Get a suggested study plan"
+        help="Generate study plan"
     )
 
     parser_plan.add_argument(
         "--mins",
         type=int,
-        default=120,
-        help="Available study time"
+        default=120
     )
 
-    # --------------------
+    # -------------------
     # GPA
-    # --------------------
+    # -------------------
 
-    parser_gpa = subparsers.add_parser(
+    parser_course = subparsers.add_parser(
         "add-course",
-        help="Add a course grade"
+        help="Add course"
     )
 
-    parser_gpa.add_argument(
-        "name",
-        help="Course name"
+    parser_course.add_argument(
+        "name"
     )
 
-    parser_gpa.add_argument(
+    parser_course.add_argument(
         "--credits",
         type=float,
-        required=True,
-        help="Credits"
+        required=True
     )
 
-    parser_gpa.add_argument(
+    parser_course.add_argument(
         "--grade",
-        required=True,
-        help="Grade (e.g., A, B+)"
+        required=True
     )
 
-    parser_calc = subparsers.add_parser(
+    subparsers.add_parser(
         "calc-gpa",
-        help="Calculate current GPA"
+        help="Calculate GPA"
     )
 
-    # --------------------
+    # -------------------
     # Exam Countdown
-    # --------------------
+    # -------------------
 
     parser_exam = subparsers.add_parser(
         "exam",
-        help="Calculate exam countdown"
+        help="Exam countdown"
     )
 
     parser_exam.add_argument(
         "--date",
-        required=True,
-        help="Exam date (YYYY-MM-DD)"
+        required=True
     )
 
-    # --------------------
+    # -------------------
+    # Homework Deadline
+    # -------------------
+
+    parser_deadline = subparsers.add_parser(
+        "deadline",
+        help="Check deadline"
+    )
+
+    parser_deadline.add_argument(
+        "--date",
+        required=True
+    )
+
+    # -------------------
     # Quiz Generator
-    # --------------------
+    # -------------------
 
-    parser_quiz = subparsers.add_parser(
+    subparsers.add_parser(
         "quiz",
-        help="Generate quiz questions"
+        help="Generate quiz"
     )
 
-    # --------------------
-    # Parse arguments
-    # --------------------
+    # -------------------
+    # Study Timer
+    # -------------------
+
+    parser_time = subparsers.add_parser(
+        "add-time",
+        help="Add study minutes"
+    )
+
+    parser_time.add_argument(
+        "minutes",
+        type=int
+    )
+
+    subparsers.add_parser(
+        "study-hours",
+        help="Show total study hours"
+    )
 
     args = parser.parse_args()
 
@@ -166,15 +187,15 @@ def main():
 
     data = storage.load_data()
 
-    # --------------------
-    # init
-    # --------------------
+    # -------------------
+    # Init
+    # -------------------
 
     if args.command == "init":
 
         if not validate_date(args.date):
             console.print(
-                "[red]Invalid date format. Use YYYY-MM-DD[/red]"
+                "[red]Invalid date format[/red]"
             )
             return
 
@@ -186,17 +207,11 @@ def main():
             f"[green]✔ Term end date set to {args.date}[/green]"
         )
 
-    # --------------------
-    # add assignment
-    # --------------------
+    # -------------------
+    # Add Assignment
+    # -------------------
 
     elif args.command == "add":
-
-        if not validate_date(args.due):
-            console.print(
-                "[red]Invalid due date format[/red]"
-            )
-            return
 
         assignments = data.get(
             "assignments",
@@ -219,61 +234,38 @@ def main():
             f"[green]✔ Added assignment: {args.name}[/green]"
         )
 
-    # --------------------
-    # study plan
-    # --------------------
+    # -------------------
+    # Study Plan
+    # -------------------
 
     elif args.command == "plan":
 
-        assignments = data.get(
-            "assignments",
-            []
-        )
-
         plan = planner.suggest_study_plan(
-            assignments,
+            data.get("assignments", []),
             args.mins
         )
 
-        if not plan:
-            console.print(
-                "[yellow]No pending assignments.[/yellow]"
-            )
-            return
-
         table = Table(
-            title=f"Suggested Study Plan ({args.mins} mins)"
+            title="Suggested Study Plan"
         )
 
-        table.add_column(
-            "Task Name",
-            style="cyan"
-        )
+        table.add_column("Task")
+        table.add_column("Due Date")
+        table.add_column("Minutes")
 
-        table.add_column(
-            "Due Date",
-            style="magenta"
-        )
-
-        table.add_column(
-            "Time",
-            justify="right",
-            style="green"
-        )
-
-        for p in plan:
+        for item in plan:
 
             table.add_row(
-                p["task_name"],
-                p["due_date"],
-                f"{p['allocated_minutes']} mins"
+                item["task_name"],
+                item["due_date"],
+                str(item["allocated_minutes"])
             )
 
         console.print(table)
 
-    # --------------------
-    # add course
-    # --------------------
+    # -------------------
+    # Add Course
+    # -------------------
 
     elif args.command == "add-course":
 
@@ -296,62 +288,115 @@ def main():
             f"[green]✔ Added course: {args.name}[/green]"
         )
 
-    # --------------------
-    # calculate GPA
-    # --------------------
+    # -------------------
+    # Calculate GPA
+    # -------------------
 
     elif args.command == "calc-gpa":
 
-        current_gpa = gpa.calculate_gpa(
-            data.get("courses", []),
-            data.get("prev_gpa", 0),
-            data.get("prev_credits", 0)
+        result = gpa.calculate_gpa(
+            data.get("courses", [])
         )
 
         console.print(
-            f"[bold green]Estimated GPA: {current_gpa}[/bold green]"
+            f"[bold green]GPA: {result}[/bold green]"
         )
 
-    # --------------------
-    # exam countdown
-    # --------------------
+    # -------------------
+    # Exam Countdown
+    # -------------------
 
     elif args.command == "exam":
-
-        if not validate_date(args.date):
-            console.print(
-                "[red]Invalid date format[/red]"
-            )
-            return
 
         days = exam.exam_countdown(
             args.date
         )
 
         console.print(
-            f"[bold blue]{days} days remaining[/bold blue]"
+            f"[blue]{days} days remaining[/blue]"
         )
 
-    # --------------------
-    # quiz generator
-    # --------------------
+    # -------------------
+    # Homework Deadline
+    # -------------------
+
+    elif args.command == "deadline":
+
+        days = deadline.days_left(
+            args.date
+        )
+
+        priority = deadline.urgency_level(
+            args.date
+        )
+
+        console.print(
+            f"Days Remaining: {days}"
+        )
+
+        console.print(
+            f"Priority: {priority}"
+        )
+
+    # -------------------
+    # Quiz Generator
+    # -------------------
 
     elif args.command == "quiz":
 
-        sample_notes = {
-            "Accounts Receivable":
-            "Money owed by customers",
-
+        notes = {
             "Demand":
-            "Relationship between price and quantity demanded"
+            "Relationship between price and quantity demanded",
+
+            "Accounts Receivable":
+            "Money owed by customers"
         }
 
-        questions = quiz.create_quiz(
-            sample_notes
+        result = quiz.create_quiz(
+            notes
         )
 
-        for q in questions:
-            console.print(q)
+        console.print(result)
+
+    # -------------------
+    # Add Study Time
+    # -------------------
+
+    elif args.command == "add-time":
+
+        data["study_minutes"] = (
+            data.get(
+                "study_minutes",
+                0
+            )
+            + args.minutes
+        )
+
+        storage.save_data(data)
+
+        console.print(
+            f"[green]Added {args.minutes} minutes[/green]"
+        )
+
+    # -------------------
+    # Show Total Hours
+    # -------------------
+
+    elif args.command == "study-hours":
+
+        session = StudySession()
+
+        session.add_time(
+            data.get(
+                "study_minutes",
+                0
+            )
+        )
+
+        console.print(
+            f"[bold green]Total Study Hours: "
+            f"{session.total_hours()}[/bold green]"
+        )
 
 
 if __name__ == "__main__":
