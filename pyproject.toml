@@ -41,8 +41,8 @@ dev = [
 studyplan = "studyplan.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/group78/studyplan"
-Repository = "https://github.com/group78/studyplan"
+Homepage = "https://github.com/ccmen78/studyplan-group78"
+Repository = "https://github.com/ccmen78/studyplan-group78"
 
 [tool.setuptools.packages.find]
 where = ["."]
