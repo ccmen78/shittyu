@@ -1,1 +1,54 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "studyplan-group78"
+version = "0.1.0"
+description = "Local CLI app and Python API for AI Agents to help students organize assignment deadlines, plan study time, track courses, and estimate GPA."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "ccmen78"},
+]
+keywords = ["study", "planner", "gpa", "student", "agent", "cli"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Education",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Education",
+    "Environment :: Console",
+]
+dependencies = [
+    "rich>=13.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "ipython",
+]
+
+[project.scripts]
+studyplan = "studyplan.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/group78/studyplan"
+Repository = "https://github.com/group78/studyplan"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["studyplan*"]
+
+[tool.setuptools.package-data]
+studyplan = ["py.typed"]
+
 
