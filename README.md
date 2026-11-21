@@ -115,5 +115,36 @@ More than 7	Low Priority
 Use Case
 Students can identify urgent assignments and better manage their study schedules.
 
+#⏱ Study Timer
+#Track study sessions and monitor productivity.
+
+session = studyplan.StudySession()
+
+session.add_time(120)
+
+print(session.total_hours())
+
+Output
+2.0
+
+Multiple Study Sessions
+import studyplan
+
+session = studyplan.StudySession()
+
+session.add_time(60)
+session.add_time(45)
+session.add_time(30)
+
+print(session.total_minutes())
+print(session.total_hours())
+
+Output
+135
+
+2.25
+Use Case
+Students can record study sessions and monitor how much time they spend studying.
+
 
 
