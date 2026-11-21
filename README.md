@@ -53,3 +53,22 @@ days = studymaster.exam_countdown(
 
 print(days)
 
+#❓ Quiz Generator
+Generate flashcard-style quiz questions from study notes.
+
+notes = {
+    "Accounts Receivable":
+    "Money owed by customers"}
+
+quiz = studyplan.create_quiz(
+    notes)
+
+print(quiz)
+Output
+
+[{"question":
+        "What is Accounts Receivable?",
+        "answer":
+        "Money owed by customers"
+    }]
+
