@@ -28,12 +28,12 @@ studyplan add "CS1302 Project" --due 2026-11-20 --est 120 --prio High
 studyplan plan --mins 90
 
 Example Output
-
 ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃ Task Name        ┃ Due Date   ┃ Time     ┃
 ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━╋━━━━━━━━━━┫
 ┃ CS1302 Project   ┃ 2026-11-20 ┃ 90 mins  ┃
 ┗━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━┻━━━━━━━━━━┛
+
 #Add Course
 studyplan add-course "Calculus" --credits 4 --grade A
 #Calculate GPA
