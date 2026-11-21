@@ -1,5 +1,5 @@
-# studyplan/storage.py
 import json
+import copy
 from pathlib import Path
 
 DATA_DIR = Path.home() / ".studyplan"
@@ -13,18 +13,65 @@ DEFAULT_DATA = {
     "prev_credits": 0.0
 }
 
+
 def load_data():
-    """Load local data, return default data if not exists."""
+    """
+    Load local data.
+    Return default data if file does not exist
+    or contains invalid JSON.
+    """
+
     if not DATA_FILE.exists():
-        return DEFAULT_DATA.copy()
+        return copy.deepcopy(DEFAULT_DATA)
+
     try:
-        with open(DATA_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except json.JSONDecodeError:
-        return DEFAULT_DATA.copy()
+
+        with open(
+            DATA_FILE,
+            "r",
+            encoding="utf-8"
+        ) as f:
+
+            data = json.load(f)
+
+        # Ensure all required fields exist
+        for key in DEFAULT_DATA:
+
+            data.setdefault(
+                key,
+                DEFAULT_DATA[key]
+            )
+
+        return data
+
+    except (
+        json.JSONDecodeError,
+        FileNotFoundError
+    ):
+
+        return copy.deepcopy(DEFAULT_DATA)
+
 
 def save_data(data):
-    """Save data to local JSON file."""
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4, ensure_ascii=False)
+    """
+    Save data to local JSON file.
+    """
+
+    DATA_DIR.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    try:
+
+        with open(
+            DATA_FILE,
+            "w",
+            encoding="utf-8"
+        ) as f:
+
+            json.dump(
+                data,
+                f,
+                indent=4,
+                ensure_ascii=False
