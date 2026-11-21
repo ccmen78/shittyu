@@ -4,7 +4,7 @@
 ## 👥 Team Members (Group 78)
 
 * **[ZHU ZIWEN(ccmen78)]** - Core Logic (GPA)& Documentation
-* **[Name 2]** - Planner & Algorithm
+* **[HUNG TSZ KIT]** - Planner & Algorithm & debug
 * **[Name 3]** - Storage & File I/O
 * **[Name 4]** - CLI Interface
 * **[Name 5]** - Packaging & Init
