@@ -86,4 +86,34 @@ quiz = studyplan.create_quiz(
 
 print(quiz)
 
+#📚 Homework Deadline Manager
+#Track assignment deadlines and determine task urgency.
+
+days = studyplan.days_left(
+    "2026-12-01"
+)
+
+print(days)
+Output
+19
+Check Urgency
+import studyplan
+
+priority = studyplan.urgency_level(
+    "2026-11-15"
+)
+
+print(priority)
+Output
+High Priority
+
+Priority Levels
+Days Remaining	Priority
+0 – 3	High Priority
+4 – 7	Medium Priority
+More than 7	Low Priority
+Use Case
+Students can identify urgent assignments and better manage their study schedules.
+
+
 
